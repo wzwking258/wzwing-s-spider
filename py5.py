@@ -40,9 +40,6 @@ for i in range(1,page):
     newurl=url+str(i)
     r=requests.get(newurl,headers=header)
     time.sleep(0.1)
-    text=re.sub('<div class="u">.*?</div>|<img.*?/>|<a href=.*?</a>|<br/>','',r.text)
-    wbzws=re.findall('<span class="ctt">(.*?)</span>',text,re.S)
-    wbsjs=re.findall('<span class="ct">(.*?)</span>',text)
     zutus=re.findall('"https://weibo.cn/mblog/picAll(.*?)">组图',r.text)
 
     q=1
@@ -51,7 +48,6 @@ for i in range(1,page):
     for zutu in zutus:
         zutur=requests.get(zutuurl+zutu,headers=header)
         pics = re.findall('"/mblog/oripic?(.*?)">原图</a>', zutur.text)
-        print(pics)
         for pic in pics:  # 爬取图片
             pic=re.sub('amp;','',pic)
             picr = requests.get(picurl + pic, headers=header)
@@ -67,15 +63,3 @@ for i in range(1,page):
         picwrite(i, j,picr)
         j += 1
         time.sleep(0.1)
-
-
-
-
-
-    #a=list(zip(wbzws,wbsjs))
-    #for (wbzw,wbsj) in a:#同时迭代多个迭代器：用zip
-       # with open(picpath+usernamestr+'.txt','a',encoding='utf-8-sig') as f:
-           # f.write(wbzw)
-          #  f.write(' '+wbsj)
-          #  f.write('\r\n')
-       # print('微博保存成功')
